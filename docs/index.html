@@ -7,19 +7,26 @@
     <title>תבנית פרלינים מדויקת</title>
     <style>
         :root {
-            --primary-color: #673ab7; /* Deep Purple */
-            --secondary-color: #ff4081; /* Pink Accent */
-            --dark-color: #512da8; /* Darker Purple */
-            --light-color: #f8f9fa; /* Lighter Gray */
+            --primary-color: #673ab7;
+            /* Deep Purple */
+            --secondary-color: #ff4081;
+            /* Pink Accent */
+            --dark-color: #512da8;
+            /* Darker Purple */
+            --light-color: #f8f9fa;
+            /* Lighter Gray */
             --border-color: #dee2e6;
             --shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            --sidebar-width: 350px; /* << כאן שולטים ברוחב תפריט הצד */
+            --sidebar-width: 350px;
+            /* << כאן שולטים ברוחב תפריט הצד */
             --input-bg: #ffffff;
             --text-color: #343a40;
             --text-muted: #6c757d;
         }
 
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
         }
 
@@ -31,6 +38,7 @@
             margin: 0;
             min-height: 100vh;
             overflow-x: hidden;
+            /* Changed from hidden to visible initially, handled in media query */
         }
 
         .sidebar {
@@ -111,12 +119,12 @@
             font-weight: 600;
             text-align: center;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .file-upload-button:hover {
             background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             transform: translateY(-1px);
         }
 
@@ -138,7 +146,8 @@
             background-color: #f1f3f5;
             padding: 5px 8px;
             border-radius: 4px;
-            min-height: 28px; /* שיהיה גובה גם כשריק */
+            min-height: 28px;
+            /* שיהיה גובה גם כשריק */
         }
 
         .checkbox-group {
@@ -162,16 +171,20 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
-            accent-color: var(--primary-color); /* צובע את ה-V */
+            accent-color: var(--primary-color);
+            /* צובע את ה-V */
         }
 
         .preview-box {
             width: 100%;
-            /* max-width: 280px; */ /* הוסר כדי לתת גמישות */
-            height: 200px; /* הגדלה קלה */
+            /* max-width: 280px; */
+            /* הוסר כדי לתת גמישות */
+            height: 200px;
+            /* הגדלה קלה */
             border: 2px dashed var(--border-color);
             border-radius: 8px;
-            margin: 10px auto; /* הקטנת מרווח עליון */
+            margin: 10px auto;
+            /* הקטנת מרווח עליון */
             background-color: #f8f9fa;
             display: flex;
             align-items: center;
@@ -181,11 +194,15 @@
             flex-shrink: 0;
             transition: border-color 0.3s ease;
         }
+
         /* הוספת הדגשה לתצוגה המקדימה כרמז לעריכה */
         .preview-box:has(img) {
-             border: 2px solid var(--primary-color); /* מסגרת כשיש תמונה */
-             cursor: grab; /* רמז לגרירה */
+            border: 2px solid var(--primary-color);
+            /* מסגרת כשיש תמונה */
+            cursor: grab;
+            /* רמז לגרירה */
         }
+
         .preview-box:has(img):active {
             cursor: grabbing;
         }
@@ -195,7 +212,8 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            display: block; /* מונע רווח תחתון קטן */
+            display: block;
+            /* מונע רווח תחתון קטן */
         }
 
         .edit-preview {
@@ -210,12 +228,15 @@
         .edit-preview img {
             max-width: 100%;
             max-height: 100%;
-            position: relative; /* חשוב ל-transform */
-            transition: transform 0.1s ease-out; /* החלקה קלה בעדכון */
+            position: relative;
+            /* חשוב ל-transform */
+            transition: transform 0.1s ease-out;
+            /* החלקה קלה בעדכון */
         }
 
         .edit-options {
-            background-color: #f1f3f5; /* רקע מעט שונה */
+            background-color: #f1f3f5;
+            /* רקע מעט שונה */
             border-radius: 8px;
             padding: 20px;
             margin-top: 15px;
@@ -265,6 +286,7 @@
             background-color: var(--input-bg);
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
+
         .slider-input-number:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.25);
@@ -294,8 +316,9 @@
             cursor: pointer;
             transition: background 0.2s ease;
         }
+
         input[type="range"]:hover {
-             background: #ced4da;
+            background: #ced4da;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -307,25 +330,28 @@
             background: var(--primary-color);
             cursor: pointer;
             border: 2px solid white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
             transition: background 0.2s ease;
         }
-         input[type="range"]::-moz-range-thumb { /* Firefox */
+
+        input[type="range"]::-moz-range-thumb {
+            /* Firefox */
             width: 18px;
             height: 18px;
             border-radius: 50%;
             background: var(--primary-color);
             cursor: pointer;
             border: 2px solid white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-             transition: background 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: background 0.2s ease;
         }
 
         input[type="range"]:active::-webkit-slider-thumb {
-             background: var(--dark-color);
+            background: var(--dark-color);
         }
-         input[type="range"]:active::-moz-range-thumb {
-             background: var(--dark-color);
+
+        input[type="range"]:active::-moz-range-thumb {
+            background: var(--dark-color);
         }
 
 
@@ -339,7 +365,8 @@
         }
 
         button {
-            background: linear-gradient(135deg, var(--secondary-color), #e91e63); /* Pink gradient */
+            background: linear-gradient(135deg, var(--secondary-color), #e91e63);
+            /* Pink gradient */
             color: white;
             border: none;
             padding: 12px 20px;
@@ -350,17 +377,18 @@
             transition: all 0.3s ease;
             flex: 1;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
 
         button:hover {
             background: linear-gradient(135deg, #e91e63, var(--secondary-color));
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transform: translateY(-2px);
         }
+
         button:active {
-             transform: translateY(0px);
-             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transform: translateY(0px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         button.secondary {
@@ -374,12 +402,14 @@
             background: #f8f9fa;
             color: var(--dark-color);
             border-color: var(--dark-color);
-            transform: translateY(-1px); /* אפקט קטן יותר */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transform: translateY(-1px);
+            /* אפקט קטן יותר */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-         button.secondary:active {
-             transform: translateY(0px);
-             background: #f1f3f5;
+
+        button.secondary:active {
+            transform: translateY(0px);
+            background: #f1f3f5;
         }
 
         .template-wrapper {
@@ -387,9 +417,11 @@
             margin: 20px auto;
             width: 595.28pt;
             height: 841.89pt;
-            background: white; /* רקע לבן גם למעטפת */
+            background: white;
+            /* רקע לבן גם למעטפת */
             box-shadow: var(--shadow);
-            border-radius: 4px; /* עיגול פינות קל */
+            border-radius: 4px;
+            /* עיגול פינות קל */
         }
 
         .template-container {
@@ -399,7 +431,8 @@
             background-color: white;
             position: relative;
             overflow: hidden;
-            border-radius: 4px; /* עיגול פינות פנימי */
+            border-radius: 4px;
+            /* עיגול פינות פנימי */
         }
 
         .template-frame {
@@ -426,7 +459,8 @@
         .praline {
             width: 76.54pt;
             height: 59.53pt;
-            border: 1px solid #e0e0e0; /* קו רציף במקום מקווקו */
+            border: 1px solid #e0e0e0;
+            /* קו רציף במקום מקווקו */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -434,7 +468,8 @@
             position: relative;
             background-color: #ffffff;
             transition: all 0.2s ease;
-            border-radius: 2px; /* עיגול פינות קל */
+            border-radius: 2px;
+            /* עיגול פינות קל */
         }
 
         .praline:nth-child(n+10) {
@@ -444,17 +479,21 @@
         .praline:hover {
             border-color: var(--primary-color);
             box-shadow: 0 0 8px rgba(103, 58, 183, 0.3);
-            z-index: 1; /* להביא קדימה בהובר */
+            z-index: 1;
+            /* להביא קדימה בהובר */
         }
 
         .praline img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            position: relative; /* שינוי מ-absolute */
+            position: relative;
+            /* שינוי מ-absolute */
             transform-origin: center;
-            display: block; /* מונע רווחים מיותרים */
-            transition: transform 0.1s ease-out; /* החלקה קלה בעדכון */
+            display: block;
+            /* מונע רווחים מיותרים */
+            transition: transform 0.1s ease-out;
+            /* החלקה קלה בעדכון */
         }
 
         .info-text {
@@ -501,7 +540,7 @@
         }
 
         .modal-overlay.visible .modal-content {
-             transform: scale(1);
+            transform: scale(1);
         }
 
         .modal-content h4 {
@@ -539,8 +578,10 @@
             background-color: var(--secondary-color);
             color: white;
         }
+
         .modal-button.primary:hover {
-            background-color: #d81b60; /* Darker pink */
+            background-color: #d81b60;
+            /* Darker pink */
         }
 
         .modal-button.secondary {
@@ -548,10 +589,12 @@
             color: var(--text-muted);
             border: 1px solid #ced4da;
         }
+
         .modal-button.secondary:hover {
             background-color: #dee2e6;
             color: var(--text-color);
         }
+
         /* --- End Modal Styles --- */
 
 
@@ -584,8 +627,10 @@
 
             .sidebar,
             .info-text,
-            .modal-overlay /* חשוב להסתיר גם את המודאל */
-             {
+            .modal-overlay
+
+            /* חשוב להסתיר גם את המודאל */
+                {
                 display: none;
             }
 
@@ -594,20 +639,204 @@
                 border-radius: 0;
                 box-shadow: none;
             }
-             .praline img {
-                 transition: none; /* למנוע אנימציות בהדפסה */
-             }
+
+            .praline img {
+                transition: none;
+                /* למנוע אנימציות בהדפסה */
+            }
 
             .content {
                 margin: 0;
                 width: 100%;
                 padding: 0;
             }
-             .template-wrapper {
-                 box-shadow: none;
-                 border-radius: 0;
-                 margin: 0;
-             }
+
+            .template-wrapper {
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+            }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+
+            /* Breakpoint for tablets and large phones */
+            body {
+                flex-direction: column;
+                /* Stack sidebar and content vertically */
+                overflow-x: hidden;
+                /* Prevent horizontal scroll */
+            }
+
+            .sidebar {
+                position: relative;
+                /* Remove fixed positioning */
+                width: 100%;
+                height: auto;
+                /* Allow height to adjust to content */
+                max-height: none;
+                /* Remove fixed height constraint */
+                border-left: none;
+                /* Remove side border */
+                border-bottom: 1px solid var(--border-color);
+                /* Add bottom border */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+                /* Lighter shadow */
+                padding: 20px;
+                /* Slightly reduce padding */
+                gap: 15px;
+                /* Reduce gap between elements */
+                overflow-y: visible;
+                /* Allow content to scroll with page */
+            }
+
+            .content {
+                margin-right: 0;
+                /* Remove margin pushing content */
+                width: 100%;
+                padding: 20px;
+                /* Adjust padding */
+                align-items: center;
+                /* Keep content centered */
+            }
+
+            .app-header h1 {
+                font-size: 1.8rem;
+                /* Slightly smaller heading */
+            }
+
+            .preview-box {
+                height: 180px;
+                /* Slightly smaller preview */
+                /* max-width: none; /* Allow full width if needed */
+            }
+
+            .edit-options {
+                padding: 15px;
+                /* Reduce padding */
+            }
+
+            .edit-options h3 {
+                font-size: 1.2rem;
+            }
+
+            .buttons-row {
+                flex-direction: column;
+                /* Stack buttons vertically */
+                gap: 10px;
+                padding-top: 15px;
+            }
+
+            button {
+                padding: 10px 15px;
+                /* Adjust button padding */
+                font-size: 14px;
+            }
+
+            .template-wrapper {
+                /* Option 1: Scale down the entire template */
+                width: 90vw;
+                /* Adjust width relative to viewport */
+                max-width: 595.28pt;
+                /* Keep max width */
+                height: auto;
+                /* Adjust height proportionally */
+                /* Calculate aspect ratio: 841.89 / 595.28 ≈ 1.414 */
+                aspect-ratio: 595.28 / 841.89;
+                margin: 15px auto;
+                /* Adjust margin */
+                overflow: hidden;
+                /* Hide anything overflowing the scaled wrapper */
+
+                /* Option 2: Allow horizontal scrolling (less ideal for preview) */
+                /* width: 595.28pt; */
+                /* height: 841.89pt; */
+                /* overflow-x: auto; */
+                /* margin: 15px 0; */
+                /* Adjust margin */
+            }
+
+            /* If using Option 1 (scaling), you might not need this, but good for smaller screens */
+            .template-container {
+                /* Ensure container fits wrapper */
+                width: 100%;
+                height: 100%;
+            }
+
+            .info-text {
+                margin-top: 20px;
+                padding: 0 10px;
+                /* Add horizontal padding */
+                font-size: 13px;
+            }
+
+            /* Adjust modal for smaller screens */
+            .modal-content {
+                padding: 20px 25px;
+                max-width: 90%;
+            }
+
+            .modal-content h4 {
+                font-size: 1.3rem;
+            }
+
+            .modal-content p {
+                font-size: 0.95rem;
+                margin-bottom: 20px;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+                /* Stack modal buttons */
+                gap: 10px;
+            }
+
+            .modal-button {
+                width: 100%;
+                /* Make modal buttons full width */
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            /* Further adjustments for small phones */
+            .app-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .control-label {
+                font-size: 0.85rem;
+            }
+
+            .file-upload-button {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+
+            .checkbox-label {
+                font-size: 0.9rem;
+            }
+
+            .slider-label {
+                font-size: 13px;
+            }
+
+            .slider-input-number {
+                width: 50px;
+                font-size: 12px;
+            }
+
+            .slider-value {
+                font-size: 11px;
+                min-width: 40px;
+                padding: 2px 6px;
+            }
+
+            .template-wrapper {
+                width: 95vw;
+                /* Slightly wider on very small screens */
+            }
         }
     </style>
 </head>
@@ -643,7 +872,7 @@
             <div class="edit-preview" id="imagePreview">
                 <div style="color: #999; font-size: 14px; padding: 10px; text-align: center;">יש לבחור תמונה</div>
             </div>
-             <!-- הערה: כאן יתווספו בעתיד ידיות גרירה/שינוי גודל -->
+            <!-- הערה: כאן יתווספו בעתיד ידיות גרירה/שינוי גודל -->
         </div>
 
         <div class="edit-options">
@@ -684,7 +913,8 @@
                 </div>
                 <input type="range" id="rotateSlider" min="-180" max="180" value="0">
             </div>
-            <button onclick="resetAdvancedEdits()" class="secondary" style="margin-top: 10px; width: 100%;">אפס התאמות</button>
+            <button onclick="resetAdvancedEdits()" class="secondary" style="margin-top: 10px; width: 100%;">אפס
+                התאמות</button>
         </div>
 
         <div class="buttons-row">
@@ -822,9 +1052,9 @@
             });
             modalCancelBtn.addEventListener("click", hideModal);
             flipWarningModal.addEventListener("click", (e) => { // Close modal on overlay click
-                 if (e.target === flipWarningModal) {
-                     hideModal();
-                 }
+                if (e.target === flipWarningModal) {
+                    hideModal();
+                }
             });
 
             // --- Interactive Preview Placeholder ---
@@ -859,9 +1089,9 @@
                 let newPosX = initialPosX + dx;
                 let newPosY = initialPosY + dy;
 
-                 // Clamp values to slider limits (optional but good practice)
-                 newPosX = Math.max(parseInt(posXSlider.min), Math.min(parseInt(posXSlider.max), newPosX));
-                 newPosY = Math.max(parseInt(posYSlider.min), Math.min(parseInt(posYSlider.max), newPosY));
+                // Clamp values to slider limits (optional but good practice)
+                newPosX = Math.max(parseInt(posXSlider.min), Math.min(parseInt(posXSlider.max), newPosX));
+                newPosY = Math.max(parseInt(posYSlider.min), Math.min(parseInt(posYSlider.max), newPosY));
 
 
                 // Update state and UI (only preview for performance during drag)
@@ -886,54 +1116,54 @@
                 }
             });
 
-             // Add touch events for mobile (similar logic to mouse events)
-             imagePreviewContainer.addEventListener('touchstart', (e) => {
-                 if (!currentImageSrc || !imagePreviewElement || e.touches.length !== 1) return;
-                 if (e.target !== imagePreviewElement) return;
+            // Add touch events for mobile (similar logic to mouse events)
+            imagePreviewContainer.addEventListener('touchstart', (e) => {
+                if (!currentImageSrc || !imagePreviewElement || e.touches.length !== 1) return;
+                if (e.target !== imagePreviewElement) return;
 
-                 isDragging = true;
-                 const touch = e.touches[0];
-                 startX = touch.clientX;
-                 startY = touch.clientY;
-                 initialPosX = currentPosX;
-                 initialPosY = currentPosY;
-                 imagePreviewContainer.style.cursor = 'grabbing';
-                 e.preventDefault(); // Prevent scrolling page
-             });
+                isDragging = true;
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                initialPosX = currentPosX;
+                initialPosY = currentPosY;
+                imagePreviewContainer.style.cursor = 'grabbing';
+                e.preventDefault(); // Prevent scrolling page
+            });
 
-             document.addEventListener('touchmove', (e) => {
-                 if (!isDragging || !imagePreviewElement || e.touches.length !== 1) return;
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging || !imagePreviewElement || e.touches.length !== 1) return;
 
-                 const touch = e.touches[0];
-                 const dx = touch.clientX - startX;
-                 const dy = touch.clientY - startY;
+                const touch = e.touches[0];
+                const dx = touch.clientX - startX;
+                const dy = touch.clientY - startY;
 
-                 let newPosX = initialPosX + dx;
-                 let newPosY = initialPosY + dy;
+                let newPosX = initialPosX + dx;
+                let newPosY = initialPosY + dy;
 
-                 newPosX = Math.max(parseInt(posXSlider.min), Math.min(parseInt(posXSlider.max), newPosX));
-                 newPosY = Math.max(parseInt(posYSlider.min), Math.min(parseInt(posYSlider.max), newPosY));
+                newPosX = Math.max(parseInt(posXSlider.min), Math.min(parseInt(posXSlider.max), newPosX));
+                newPosY = Math.max(parseInt(posYSlider.min), Math.min(parseInt(posYSlider.max), newPosY));
 
-                 currentPosX = newPosX;
-                 currentPosY = newPosY;
-                 posXValue.textContent = `${currentPosX}px`;
-                 posYValue.textContent = `${currentPosY}px`;
-                 posXSlider.value = currentPosX;
-                 posYSlider.value = currentPosY;
-                 posXInput.value = currentPosX;
-                 posYInput.value = currentPosY;
+                currentPosX = newPosX;
+                currentPosY = newPosY;
+                posXValue.textContent = `${currentPosX}px`;
+                posYValue.textContent = `${currentPosY}px`;
+                posXSlider.value = currentPosX;
+                posYSlider.value = currentPosY;
+                posXInput.value = currentPosX;
+                posYInput.value = currentPosY;
 
-                 applyTransformToElement(imagePreviewElement);
-             }, { passive: false }); // Need passive: false to call preventDefault
+                applyTransformToElement(imagePreviewElement);
+            }, { passive: false }); // Need passive: false to call preventDefault
 
-             document.addEventListener('touchend', () => {
-                 if (isDragging) {
-                     isDragging = false;
-                     imagePreviewContainer.style.cursor = 'grab';
-                     applyImageToPralines();
-                 }
-             });
-             // --- End Interactive Preview Placeholder ---
+            document.addEventListener('touchend', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    imagePreviewContainer.style.cursor = 'grab';
+                    applyImageToPralines();
+                }
+            });
+            // --- End Interactive Preview Placeholder ---
         }
 
         // --- Event Handlers ---
@@ -979,9 +1209,9 @@
                 val = Math.max(min, Math.min(max, val));
 
                 // Update the input field itself only on 'change' to avoid disrupting typing
-                 if (event.type === 'change') {
+                if (event.type === 'change') {
                     inputElement.value = val;
-                 }
+                }
 
                 // Call the specific update function (e.g., updateScale)
                 updateFunction(val);
@@ -1045,7 +1275,7 @@
 
             // Set src only if it changed (minor optimization)
             if (imagePreviewElement.src !== currentImageSrc) {
-                 imagePreviewElement.src = currentImageSrc;
+                imagePreviewElement.src = currentImageSrc;
             }
 
             // Apply transformations
@@ -1054,18 +1284,18 @@
 
         // Applies the current transform state to a given image element
         function applyTransformToElement(imgElement) {
-             if (!imgElement) return;
-             const transforms = [];
-             // Apply position first
-             imgElement.style.left = `${currentPosX}px`;
-             imgElement.style.top = `${currentPosY}px`;
-             // Then apply scale/rotate/flip
-             if (isFlipped) transforms.push('scaleX(-1)');
-             if (currentRotate !== 0) transforms.push(`rotate(${currentRotate}deg)`);
-             // Apply scale last for correct positioning interaction
-             if (currentScale !== 100) transforms.push(`scale(${currentScale / 100})`);
+            if (!imgElement) return;
+            const transforms = [];
+            // Apply position first
+            imgElement.style.left = `${currentPosX}px`;
+            imgElement.style.top = `${currentPosY}px`;
+            // Then apply scale/rotate/flip
+            if (isFlipped) transforms.push('scaleX(-1)');
+            if (currentRotate !== 0) transforms.push(`rotate(${currentRotate}deg)`);
+            // Apply scale last for correct positioning interaction
+            if (currentScale !== 100) transforms.push(`scale(${currentScale / 100})`);
 
-             imgElement.style.transform = transforms.join(' ');
+            imgElement.style.transform = transforms.join(' ');
         }
 
 
@@ -1085,9 +1315,9 @@
                 }
 
                 // Set src only if needed
-                 if (img.src !== currentImageSrc) {
+                if (img.src !== currentImageSrc) {
                     img.src = currentImageSrc;
-                 }
+                }
 
                 // Apply transformations
                 applyTransformToElement(img);
@@ -1164,10 +1394,10 @@
         // --- Utility Functions ---
         // Syncs range slider min/max if they differ from number inputs (run once on load)
         function updateRangeMinMaxFromInputs() {
-             syncMinMax(scaleInput, scaleSlider);
-             syncMinMax(posXInput, posXSlider);
-             syncMinMax(posYInput, posYSlider);
-             syncMinMax(rotateInput, rotateSlider);
+            syncMinMax(scaleInput, scaleSlider);
+            syncMinMax(posXInput, posXSlider);
+            syncMinMax(posYInput, posYSlider);
+            syncMinMax(rotateInput, rotateSlider);
         }
         function syncMinMax(numInput, rangeInput) {
             if (numInput.min) rangeInput.min = numInput.min;
