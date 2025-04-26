@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תבנית פרלינים מדויקת</title>
+    <style>
+        :root {
+            --primary-color: #673ab7; /* Deep Purple */
+            --secondary-color: #ff4081; /* Pink Accent */
+            --dark-color: #512da8; /* Darker Purple */
+            --light-color: #f8f9fa; /* Lighter Gray */
+            --border-color: #dee2e6;
+            --shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            --sidebar-width: 350px; /* << כאן שולטים ברוחב תפריט הצד */
+            --input-bg: #ffffff;
+            --text-color: #343a40;
+            --text-muted: #6c757d;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            display: flex;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            overflow-y: auto;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .content {
+            margin-right: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+
+        .control-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .file-upload-button {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .file-upload-button:hover {
+            background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+        }
+
+        .file-upload-button input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-name {
+            margin-top: 5px;
+            font-size: 13px;
+            color: var(--text-muted);
+            word-break: break-all;
+            background-color: #f1f3f5;
+            padding: 5px 8px;
+            border-radius: 4px;
+            min-height: 28px; /* שיהיה גובה גם כשריק */
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary-color); /* צובע את ה-V */
+        }
+
+        .preview-box {
+            width: 100%;
+            /* max-width: 280px; */ /* הוסר כדי לתת גמישות */
+            height: 200px; /* הגדלה קלה */
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            margin: 10px auto; /* הקטנת מרווח עליון */
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: border-color 0.3s ease;
+        }
+        /* הוספת הדגשה לתצוגה המקדימה כרמז לעריכה */
+        .preview-box:has(img) {
+             border: 2px solid var(--primary-color); /* מסגרת כשיש תמונה */
+             cursor: grab; /* רמז לגרירה */
+        }
+        .preview-box:has(img):active {
+            cursor: grabbing;
+        }
+
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block; /* מונע רווח תחתון קטן */
+        }
+
+        .edit-preview {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            position: relative; /* חשוב ל-transform */
+            transition: transform 0.1s ease-out; /* החלקה קלה בעדכון */
+        }
+
+        .edit-options {
+            background-color: #f1f3f5; /* רקע מעט שונה */
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .edit-options h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            font-size: 14px;
+            gap: 10px;
+            color: var(--text-color);
+        }
+
+        .slider-label span:first-child {
+            flex-grow: 1;
+        }
+
+        .slider-input-number {
+            width: 60px;
+            padding: 4px 6px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 13px;
+            background-color: var(--input-bg);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .slider-input-number:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.25);
+            outline: none;
+        }
+
+        .slider-value {
+            background: #e9ecef;
+            padding: 3px 9px;
+            border-radius: 4px;
+            font-size: 12px;
+            min-width: 45px;
+            text-align: center;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #dee2e6;
+            border-radius: 4px;
+            outline: none;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        input[type="range"]:hover {
+             background: #ced4da;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: background 0.2s ease;
+        }
+         input[type="range"]::-moz-range-thumb { /* Firefox */
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+             transition: background 0.2s ease;
+        }
+
+        input[type="range"]:active::-webkit-slider-thumb {
+             background: var(--dark-color);
+        }
+         input[type="range"]:active::-moz-range-thumb {
+             background: var(--dark-color);
+        }
+
+
+        .buttons-row {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--secondary-color), #e91e63); /* Pink gradient */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #e91e63, var(--secondary-color));
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+        }
+        button:active {
+             transform: translateY(0px);
+             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        button.secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+
+        button.secondary:hover {
+            background: #f8f9fa;
+            color: var(--dark-color);
+            border-color: var(--dark-color);
+            transform: translateY(-1px); /* אפקט קטן יותר */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+         button.secondary:active {
+             transform: translateY(0px);
+             background: #f1f3f5;
+        }
+
+        .template-wrapper {
+            position: relative;
+            margin: 20px auto;
+            width: 595.28pt;
+            height: 841.89pt;
+            background: white; /* רקע לבן גם למעטפת */
+            box-shadow: var(--shadow);
+            border-radius: 4px; /* עיגול פינות קל */
+        }
+
+        .template-container {
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px; /* עיגול פינות פנימי */
+        }
+
+        .template-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* הסרת הקווים המקווקוים, אפשר להחזיר אם רוצים */
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 76.54pt);
+            grid-template-rows: repeat(6, 59.53pt);
+            gap: 68.03pt 45.35pt;
+            padding: 72.28pt 137.55pt;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .praline {
+            width: 76.54pt;
+            height: 59.53pt;
+            border: 1px solid #e0e0e0; /* קו רציף במקום מקווקו */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            border-radius: 2px; /* עיגול פינות קל */
+        }
+
+        .praline:nth-child(n+10) {
+            transform: translateY(-1mm);
+        }
+
+        .praline:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(103, 58, 183, 0.3);
+            z-index: 1; /* להביא קדימה בהובר */
+        }
+
+        .praline img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative; /* שינוי מ-absolute */
+            transform-origin: center;
+            display: block; /* מונע רווחים מיותרים */
+            transition: transform 0.1s ease-out; /* החלקה קלה בעדכון */
+        }
+
+        .info-text {
+            color: var(--text-muted);
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* --- Modal Styles --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.visible .modal-content {
+             transform: scale(1);
+        }
+
+        .modal-content h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .modal-content p {
+            margin-bottom: 25px;
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-button {
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .modal-button.primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        .modal-button.primary:hover {
+            background-color: #d81b60; /* Darker pink */
+        }
+
+        .modal-button.secondary {
+            background-color: #e9ecef;
+            color: var(--text-muted);
+            border: 1px solid #ced4da;
+        }
+        .modal-button.secondary:hover {
+            background-color: #dee2e6;
+            color: var(--text-color);
+        }
+        /* --- End Modal Styles --- */
+
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            .template-container,
+            .template-container * {
+                visibility: visible;
+            }
+
+            .template-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                border: none;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .sidebar,
+            .info-text,
+            .modal-overlay /* חשוב להסתיר גם את המודאל */
+             {
+                display: none;
+            }
+
+            .praline {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+             .praline img {
+                 transition: none; /* למנוע אנימציות בהדפסה */
+             }
+
+            .content {
+                margin: 0;
+                width: 100%;
+                padding: 0;
+            }
+             .template-wrapper {
+                 box-shadow: none;
+                 border-radius: 0;
+                 margin: 0;
+             }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- תפריט צד -->
+    <div class="sidebar">
+        <div class="app-header">
+            <h1>תבנית פרלינים</h1>
+            <p class="subtitle">הכנס תמונה והדפס תבנית מדויקת</p>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">בחר תמונה לפרלינים:</label>
+            <div class="file-upload">
+                <div class="file-upload-button">
+                    <span>בחר קובץ תמונה</span>
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
+                <div id="fileName" class="file-name"></div>
+            </div>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="flipImages" checked>
+                    הפוך תמונה אופקית (מראה)
+                </label>
+            </div>
+        </div>
+
+        <!-- שינוי: הוספת כותרת לתצוגה המקדימה -->
+        <label class="control-label" style="text-align: center; margin-bottom: 5px;">תצוגה מקדימה ועריכה</label>
+        <div class="preview-box" title="ניתן לגרור את התמונה כאן (פונקציונליות עתידית)">
+            <div class="edit-preview" id="imagePreview">
+                <div style="color: #999; font-size: 14px; padding: 10px; text-align: center;">יש לבחור תמונה</div>
+            </div>
+             <!-- הערה: כאן יתווספו בעתיד ידיות גרירה/שינוי גודל -->
+        </div>
+
+        <div class="edit-options">
+            <h3>אפשרויות התאמה</h3>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>גודל</span>
+                    <input type="number" id="scaleInput" min="10" max="300" value="100" class="slider-input-number">
+                    <span class="slider-value" id="scaleValue">100%</span>
+                </div>
+                <input type="range" id="scaleSlider" min="10" max="300" value="100">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>מיקום אופקי</span>
+                    <input type="number" id="posXInput" min="-150" max="150" value="0" class="slider-input-number">
+                    <span class="slider-value" id="posXValue">0px</span>
+                </div>
+                <input type="range" id="posXSlider" min="-150" max="150" value="0">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>מיקום אנכי</span>
+                    <input type="number" id="posYInput" min="-150" max="150" value="0" class="slider-input-number">
+                    <span class="slider-value" id="posYValue">0px</span>
+                </div>
+                <input type="range" id="posYSlider" min="-150" max="150" value="0">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>סיבוב</span>
+                    <input type="number" id="rotateInput" min="-180" max="180" value="0" class="slider-input-number">
+                    <span class="slider-value" id="rotateValue">0°</span>
+                </div>
+                <input type="range" id="rotateSlider" min="-180" max="180" value="0">
+            </div>
+            <button onclick="resetAdvancedEdits()" class="secondary" style="margin-top: 10px; width: 100%;">אפס התאמות</button>
+        </div>
+
+        <div class="buttons-row">
+            <button onclick="confirmAndPrint()">הדפס תבנית</button>
+            <button onclick="resetTemplate()" class="secondary">נקה הכל</button>
+        </div>
+    </div>
+
+    <!-- תוכן ראשי -->
+    <div class="content">
+        <div class="template-wrapper">
+            <div class="template-container">
+                <div class="template-grid" id="templateGrid"></div>
+            </div>
+        </div>
+
+        <p class="info-text">
+            תבנית זו מכילה 18 פרלינים (3 × 6) בגודל 76.54 × 59.53 נקודות עם מרווחים מדויקים. התבנית מותאמת לדף בגודל A4.
+            מומלץ להדפיס עם הגדרת 'Actual Size' או '100%' וללא שוליים (Borderless) אם המדפסת תומכת.
+        </p>
+    </div>
+
+    <!-- Modal HTML (Hidden by default) -->
+    <div id="flipWarningModal" class="modal-overlay">
+        <div class="modal-content">
+            <h4>אזהרה - הדפסה ללא היפוך</h4>
+            <p>שימו לב: התמונה לא תודפס הפוכה (כתמונת מראה), דבר שמומלץ מאוד עבור טרנספרים לשוקולד.</p>
+            <p>האם ברצונכם להמשיך בהדפסה כרגיל?</p>
+            <div class="modal-buttons">
+                <button id="modalConfirmPrint" class="modal-button primary">כן, הדפס כרגיל</button>
+                <button id="modalCancelPrint" class="modal-button secondary">ביטול</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- State Variables ---
+        let currentScale = 100;
+        let currentPosX = 0;
+        let currentPosY = 0;
+        let currentRotate = 0;
+        let currentImageSrc = null;
+        let isFlipped = true;
+
+        // --- DOM Element References ---
+        let templateGrid, imageUpload, fileName, flipImagesCheckbox, imagePreviewContainer, imagePreviewElement;
+        let scaleSlider, scaleInput, posXSlider, posXInput, posYSlider, posYInput, rotateSlider, rotateInput;
+        let scaleValue, posXValue, posYValue, rotateValue;
+        let flipWarningModal, modalConfirmBtn, modalCancelBtn;
+
+        // --- Initialization ---
+        document.addEventListener("DOMContentLoaded", function () {
+            // Assign DOM elements
+            templateGrid = document.getElementById("templateGrid");
+            imageUpload = document.getElementById("imageUpload");
+            fileName = document.getElementById("fileName");
+            flipImagesCheckbox = document.getElementById("flipImages");
+            imagePreviewContainer = document.getElementById("imagePreview"); // The container div
+            // Sliders and Inputs
+            scaleSlider = document.getElementById("scaleSlider");
+            scaleInput = document.getElementById("scaleInput");
+            posXSlider = document.getElementById("posXSlider");
+            posXInput = document.getElementById("posXInput");
+            posYSlider = document.getElementById("posYSlider");
+            posYInput = document.getElementById("posYInput");
+            rotateSlider = document.getElementById("rotateSlider");
+            rotateInput = document.getElementById("rotateInput");
+            // Value Displays
+            scaleValue = document.getElementById("scaleValue");
+            posXValue = document.getElementById("posXValue");
+            posYValue = document.getElementById("posYValue");
+            rotateValue = document.getElementById("rotateValue");
+            // Modal elements
+            flipWarningModal = document.getElementById("flipWarningModal");
+            modalConfirmBtn = document.getElementById("modalConfirmPrint");
+            modalCancelBtn = document.getElementById("modalCancelPrint");
+
+            // Set initial state
+            isFlipped = flipImagesCheckbox.checked;
+            updateRangeMinMaxFromInputs(); // Sync range slider limits if needed
+
+            // Create praline divs
+            createPralineGrid();
+
+            // Add Event Listeners
+            setupEventListeners();
+
+            // Initial UI update
+            updatePreview(); // Show initial placeholder text
+        });
+
+        // --- Grid Creation ---
+        function createPralineGrid() {
+            templateGrid.innerHTML = ''; // Clear existing grid if any
+            for (let i = 0; i < 18; i++) {
+                const praline = document.createElement("div");
+                praline.className = "praline";
+                praline.dataset.index = i + 1;
+                templateGrid.appendChild(praline);
+            }
+        }
+
+        // --- Event Listener Setup ---
+        function setupEventListeners() {
+            imageUpload.addEventListener("change", handleImageUpload);
+            flipImagesCheckbox.addEventListener("change", handleFlipChange);
+
+            // Sliders (update on input for live preview, apply on change for final template)
+            scaleSlider.addEventListener("input", () => updateScale(scaleSlider.value));
+            scaleSlider.addEventListener("change", applyImageToPralines);
+            posXSlider.addEventListener("input", () => updatePosX(posXSlider.value));
+            posXSlider.addEventListener("change", applyImageToPralines);
+            posYSlider.addEventListener("input", () => updatePosY(posYSlider.value));
+            posYSlider.addEventListener("change", applyImageToPralines);
+            rotateSlider.addEventListener("input", () => updateRotate(rotateSlider.value));
+            rotateSlider.addEventListener("change", applyImageToPralines);
+
+            // Number Inputs (validate and update on change)
+            scaleInput.addEventListener("change", handleNumericInputChange(scaleInput, updateScale, applyImageToPralines));
+            posXInput.addEventListener("change", handleNumericInputChange(posXInput, updatePosX, applyImageToPralines));
+            posYInput.addEventListener("change", handleNumericInputChange(posYInput, updatePosY, applyImageToPralines));
+            rotateInput.addEventListener("change", handleNumericInputChange(rotateInput, updateRotate, applyImageToPralines));
+            // Optional: Add 'input' listeners too for more responsive feel, but 'change' is safer
+            scaleInput.addEventListener("input", () => handleNumericInputChange(scaleInput, updateScale)()); // Update preview on input
+            posXInput.addEventListener("input", () => handleNumericInputChange(posXInput, updatePosX)());
+            posYInput.addEventListener("input", () => handleNumericInputChange(posYInput, updatePosY)());
+            rotateInput.addEventListener("input", () => handleNumericInputChange(rotateInput, updateRotate)());
+
+
+            // Modal Buttons
+            modalConfirmBtn.addEventListener("click", () => {
+                hideModal();
+                proceedToPrint();
+            });
+            modalCancelBtn.addEventListener("click", hideModal);
+            flipWarningModal.addEventListener("click", (e) => { // Close modal on overlay click
+                 if (e.target === flipWarningModal) {
+                     hideModal();
+                 }
+            });
+
+            // --- Interactive Preview Placeholder ---
+            // Note: Full implementation is complex. Using a library like Interact.js is recommended.
+            // Basic drag idea (very simplified, needs refinement & scaling):
+            let isDragging = false;
+            let startX, startY, initialPosX, initialPosY;
+
+            imagePreviewContainer.addEventListener('mousedown', (e) => {
+                if (!currentImageSrc || !imagePreviewElement) return;
+                // Prevent dragging if clicking on input elements inside preview (if any added later)
+                if (e.target !== imagePreviewElement) return;
+
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                initialPosX = currentPosX;
+                initialPosY = currentPosY;
+                imagePreviewContainer.style.cursor = 'grabbing'; // Change cursor
+                // Prevent text selection during drag
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging || !imagePreviewElement) return;
+
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+
+                // Calculate new position, respecting potential scaling of the preview container if needed
+                // For now, assume 1:1 movement
+                let newPosX = initialPosX + dx;
+                let newPosY = initialPosY + dy;
+
+                 // Clamp values to slider limits (optional but good practice)
+                 newPosX = Math.max(parseInt(posXSlider.min), Math.min(parseInt(posXSlider.max), newPosX));
+                 newPosY = Math.max(parseInt(posYSlider.min), Math.min(parseInt(posYSlider.max), newPosY));
+
+
+                // Update state and UI (only preview for performance during drag)
+                currentPosX = newPosX;
+                currentPosY = newPosY;
+                posXValue.textContent = `${currentPosX}px`;
+                posYValue.textContent = `${currentPosY}px`;
+                posXSlider.value = currentPosX; // Update slider position
+                posYSlider.value = currentPosY;
+                posXInput.value = currentPosX; // Update number input
+                posYInput.value = currentPosY;
+
+                applyTransformToElement(imagePreviewElement); // Update only preview image transform
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    imagePreviewContainer.style.cursor = 'grab'; // Restore cursor
+                    // Apply the final position to all pralines
+                    applyImageToPralines();
+                }
+            });
+
+             // Add touch events for mobile (similar logic to mouse events)
+             imagePreviewContainer.addEventListener('touchstart', (e) => {
+                 if (!currentImageSrc || !imagePreviewElement || e.touches.length !== 1) return;
+                 if (e.target !== imagePreviewElement) return;
+
+                 isDragging = true;
+                 const touch = e.touches[0];
+                 startX = touch.clientX;
+                 startY = touch.clientY;
+                 initialPosX = currentPosX;
+                 initialPosY = currentPosY;
+                 imagePreviewContainer.style.cursor = 'grabbing';
+                 e.preventDefault(); // Prevent scrolling page
+             });
+
+             document.addEventListener('touchmove', (e) => {
+                 if (!isDragging || !imagePreviewElement || e.touches.length !== 1) return;
+
+                 const touch = e.touches[0];
+                 const dx = touch.clientX - startX;
+                 const dy = touch.clientY - startY;
+
+                 let newPosX = initialPosX + dx;
+                 let newPosY = initialPosY + dy;
+
+                 newPosX = Math.max(parseInt(posXSlider.min), Math.min(parseInt(posXSlider.max), newPosX));
+                 newPosY = Math.max(parseInt(posYSlider.min), Math.min(parseInt(posYSlider.max), newPosY));
+
+                 currentPosX = newPosX;
+                 currentPosY = newPosY;
+                 posXValue.textContent = `${currentPosX}px`;
+                 posYValue.textContent = `${currentPosY}px`;
+                 posXSlider.value = currentPosX;
+                 posYSlider.value = currentPosY;
+                 posXInput.value = currentPosX;
+                 posYInput.value = currentPosY;
+
+                 applyTransformToElement(imagePreviewElement);
+             }, { passive: false }); // Need passive: false to call preventDefault
+
+             document.addEventListener('touchend', () => {
+                 if (isDragging) {
+                     isDragging = false;
+                     imagePreviewContainer.style.cursor = 'grab';
+                     applyImageToPralines();
+                 }
+             });
+             // --- End Interactive Preview Placeholder ---
+        }
+
+        // --- Event Handlers ---
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileName.textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    currentImageSrc = event.target.result;
+                    resetAdvancedEdits(); // Reset edits when new image is loaded
+                    updatePreview();
+                    applyImageToPralines();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileName.textContent = ""; // Clear filename if selection cancelled
+            }
+        }
+
+        function handleFlipChange() {
+            isFlipped = this.checked;
+            updatePreview();
+            applyImageToPralines();
+        }
+
+        // Generic handler for numeric input changes
+        function handleNumericInputChange(inputElement, updateFunction, applyFunction = null) {
+            return () => {
+                let val = parseInt(inputElement.value);
+                const min = parseInt(inputElement.min);
+                const max = parseInt(inputElement.max);
+
+                if (isNaN(val)) {
+                    // Optionally revert to the current value or a default
+                    // For now, just exit if not a number during input event
+                    if (event.type === 'input') return;
+                    // On change event, try to recover or use default
+                    val = (updateFunction === updateScale) ? 100 : 0; // Example default
+                }
+
+                // Clamp value to min/max
+                val = Math.max(min, Math.min(max, val));
+
+                // Update the input field itself only on 'change' to avoid disrupting typing
+                 if (event.type === 'change') {
+                    inputElement.value = val;
+                 }
+
+                // Call the specific update function (e.g., updateScale)
+                updateFunction(val);
+
+                // Call the apply function (e.g., applyImageToPralines) if provided (usually on 'change')
+                if (applyFunction && event.type === 'change') {
+                    applyFunction();
+                }
+            };
+        }
+
+
+        // --- Update Functions ---
+        function updateScale(value) {
+            currentScale = parseInt(value);
+            scaleValue.textContent = `${currentScale}%`;
+            scaleSlider.value = currentScale; // Sync slider
+            scaleInput.value = currentScale; // Sync input field
+            updatePreview();
+        }
+
+        function updatePosX(value) {
+            currentPosX = parseInt(value);
+            posXValue.textContent = `${currentPosX}px`;
+            posXSlider.value = currentPosX;
+            posXInput.value = currentPosX;
+            updatePreview();
+        }
+
+        function updatePosY(value) {
+            currentPosY = parseInt(value);
+            posYValue.textContent = `${currentPosY}px`;
+            posYSlider.value = currentPosY;
+            posYInput.value = currentPosY;
+            updatePreview();
+        }
+
+        function updateRotate(value) {
+            currentRotate = parseInt(value);
+            rotateValue.textContent = `${currentRotate}°`;
+            rotateSlider.value = currentRotate;
+            rotateInput.value = currentRotate;
+            updatePreview();
+        }
+
+        // Updates only the preview image
+        function updatePreview() {
+            if (!currentImageSrc) {
+                imagePreviewContainer.innerHTML = '<div style="color: #999; font-size: 14px; padding: 10px; text-align: center;">יש לבחור תמונה</div>';
+                imagePreviewElement = null; // Clear reference
+                return;
+            }
+
+            // Create image element if it doesn't exist
+            if (!imagePreviewElement || imagePreviewElement.parentNode !== imagePreviewContainer) {
+                imagePreviewContainer.innerHTML = ''; // Clear placeholder
+                imagePreviewElement = document.createElement("img");
+                imagePreviewElement.alt = "תצוגה מקדימה";
+                imagePreviewContainer.appendChild(imagePreviewElement);
+            }
+
+            // Set src only if it changed (minor optimization)
+            if (imagePreviewElement.src !== currentImageSrc) {
+                 imagePreviewElement.src = currentImageSrc;
+            }
+
+            // Apply transformations
+            applyTransformToElement(imagePreviewElement);
+        }
+
+        // Applies the current transform state to a given image element
+        function applyTransformToElement(imgElement) {
+             if (!imgElement) return;
+             const transforms = [];
+             // Apply position first
+             imgElement.style.left = `${currentPosX}px`;
+             imgElement.style.top = `${currentPosY}px`;
+             // Then apply scale/rotate/flip
+             if (isFlipped) transforms.push('scaleX(-1)');
+             if (currentRotate !== 0) transforms.push(`rotate(${currentRotate}deg)`);
+             // Apply scale last for correct positioning interaction
+             if (currentScale !== 100) transforms.push(`scale(${currentScale / 100})`);
+
+             imgElement.style.transform = transforms.join(' ');
+        }
+
+
+        // Applies the image and transformations to all praline divs
+        function applyImageToPralines() {
+            if (!currentImageSrc) return;
+
+            const pralines = templateGrid.querySelectorAll(".praline");
+            pralines.forEach(praline => {
+                // Reuse or create image element
+                let img = praline.querySelector("img");
+                if (!img) {
+                    img = document.createElement("img");
+                    img.alt = "פרלין";
+                    praline.innerHTML = ''; // Clear any previous content
+                    praline.appendChild(img);
+                }
+
+                // Set src only if needed
+                 if (img.src !== currentImageSrc) {
+                    img.src = currentImageSrc;
+                 }
+
+                // Apply transformations
+                applyTransformToElement(img);
+            });
+        }
+
+        // --- Reset Functions ---
+        function resetAdvancedEdits() {
+            // Reset sliders and inputs to defaults
+            updateScale(100);
+            updatePosX(0);
+            updatePosY(0);
+            updateRotate(0);
+
+            // Ensure final application if an image exists
+            if (currentImageSrc) {
+                applyImageToPralines();
+            }
+        }
+
+        function resetTemplate() {
+            // Clear image source and file selection
+            currentImageSrc = null;
+            imageUpload.value = "";
+            fileName.textContent = "";
+
+            // Reset preview
+            updatePreview(); // Will show placeholder
+
+            // Clear pralines
+            const pralines = templateGrid.querySelectorAll(".praline");
+            pralines.forEach(praline => {
+                praline.innerHTML = "";
+            });
+
+            // Reset flip checkbox to default
+            flipImagesCheckbox.checked = true;
+            isFlipped = true;
+
+            // Reset advanced edits
+            resetAdvancedEdits();
+        }
+
+        // --- Print Functions ---
+        function confirmAndPrint() {
+            if (!currentImageSrc) {
+                // Maybe show a custom alert/modal here too?
+                alert("יש לבחור תמונה לפני ההדפסה.");
+                return;
+            }
+
+            if (!flipImagesCheckbox.checked) {
+                showModal(); // Show the custom modal instead of window.confirm
+            } else {
+                proceedToPrint(); // Print directly if already flipped
+            }
+        }
+
+        function proceedToPrint() {
+            // Optional: Briefly remove focus outline from button before printing
+            if (document.activeElement) document.activeElement.blur();
+            window.print();
+        }
+
+        // --- Modal Functions ---
+        function showModal() {
+            flipWarningModal.classList.add('visible');
+        }
+
+        function hideModal() {
+            flipWarningModal.classList.remove('visible');
+        }
+
+        // --- Utility Functions ---
+        // Syncs range slider min/max if they differ from number inputs (run once on load)
+        function updateRangeMinMaxFromInputs() {
+             syncMinMax(scaleInput, scaleSlider);
+             syncMinMax(posXInput, posXSlider);
+             syncMinMax(posYInput, posYSlider);
+             syncMinMax(rotateInput, rotateSlider);
+        }
+        function syncMinMax(numInput, rangeInput) {
+            if (numInput.min) rangeInput.min = numInput.min;
+            if (numInput.max) rangeInput.max = numInput.max;
+        }
+
+        // Make global functions accessible via window object if needed outside this script
+        window.resetAdvancedEdits = resetAdvancedEdits;
+        window.resetTemplate = resetTemplate;
+        window.confirmAndPrint = confirmAndPrint;
+
+    </script>
+</body>
+
+</html>
